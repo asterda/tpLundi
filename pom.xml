@@ -24,8 +24,8 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ecommercejpa4</groupId>
-			<artifactId>ecommerce-jpa4</artifactId>
+			<groupId>com.open_formation.troisiemeSite</groupId>
+			<artifactId>ecommerce-jpa5</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
