@@ -16,5 +16,6 @@
 <li>${produit.nom}</li>
 </c:forEach>
 </ul>
+<jsp:include page="menu.jsp"></jsp:include>
 </body>
 </html>
