@@ -30,6 +30,10 @@ public class AuthController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getParameter("action");
+		if(action != null && action.equals("deconnexion")) {
+			request.getSession().invalidate();
+		}
 		response.sendRedirect("/tpLundi/Accueil");
 	}
 
@@ -50,7 +54,7 @@ public class AuthController extends HttpServlet {
 		 */
 		// 1)
 		if(user == null) {
-			request.setAttribute("messageErreur", "login ou mot de passe incorrect");
+			request.setAttribute("messageErreur", "Erreur: login ou mot de passe incorrect.");
 		}else {
 			if(user.getRole() == Role.USER) {
 				request.getSession().setAttribute("isUser", true);
@@ -60,7 +64,7 @@ public class AuthController extends HttpServlet {
 				request.getSession().setAttribute("isAdmin", true);
 			}
 		}
-		request.getRequestDispatcher("Accueil.jsp").forward(request, response);
+		request.getRequestDispatcher("accueil.jsp").forward(request, response);
 
 		
 	}

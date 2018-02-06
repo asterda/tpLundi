@@ -33,7 +33,6 @@ public class GestionUtilisateurs extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getSession().setAttribute("isAdmin", true);
 		if(request.getSession().getAttribute("isAdmin") != null && (Boolean) request.getSession().getAttribute("isAdmin") == true) {
 			// Gestion action suppression
 			String action = request.getParameter("action");
@@ -47,7 +46,7 @@ public class GestionUtilisateurs extends HttpServlet {
 			request.setAttribute("utilisateurs", utilisateurs);
 			request.getRequestDispatcher("gestionUtilisateurs.jsp").forward(request, response);
 		}else {
-			request.getRequestDispatcher("Accueil.jsp").forward(request, response);
+			response.sendRedirect("/tpLundi/Accueil");
 		}
 	}
 
@@ -55,7 +54,6 @@ public class GestionUtilisateurs extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().setAttribute("isAdmin", true);
 		if(request.getSession().getAttribute("isAdmin") != null && (Boolean) request.getSession().getAttribute("isAdmin") == true) {
 			// Variables formulaires
 			String login = request.getParameter("login");
@@ -78,7 +76,7 @@ public class GestionUtilisateurs extends HttpServlet {
 			}
 			doGet(request, response);
 		}else {
-			request.getRequestDispatcher("Accueil.jsp").forward(request, response);
+			response.sendRedirect("/tpLundi/Accueil");
 		}		
 	}
 

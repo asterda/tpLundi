@@ -18,15 +18,10 @@ public class Accueil extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.getSession().setAttribute("isAdmin", true);
-		request.getSession().setAttribute("isUser", true);
-		
 		request.getRequestDispatcher("accueil.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		doGet(request, response);
 	}
 
