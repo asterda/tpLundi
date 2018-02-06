@@ -19,22 +19,27 @@ function cbEditerUtilisateur(){
 
 function cbSauvegarderModal(){
 	
-	var $form = $("form");
+	// Champs modal
+	$id = $("#identifiantModal").val();
+	$login = $("#loginModal").val();
+	$password = $("#passwordModal").val();
+	$role = $("#roleModal").val();
+	
+	// Formulaire caché créé à la volée
+	// Nb : erreur initiale création noeud via Jquery : var $form = $("form");
+	// -> Jquery allait sélectionner le formulaire d'ajout plutôt que de créer
+	// un nouveau noeud formulaire. Idem pour les inputs.
+	var $form = $("<form/>");
 	$form.attr("method", "post");
 	$form.attr("action", "/tpLundi/GestionUtilisateurs");
-	$form.append($("input").attr("type", "hidden"));
+	$form.append($("<input/>").attr("type", "hidden").attr("name", "id").val($id));
+	$form.append($("<input/>").attr("type", "hidden").attr("name", "login").val($login));
+	$form.append($("<input/>").attr("type", "hidden").attr("name", "password").val($password));
+	$form.append($("<input/>").attr("type", "hidden").attr("name", "role").val($role));
+	$form.append($("<input/>").attr("type", "hidden").attr("name", "typeAction").val("edition"));
+    $('body').append($form);        
+    $form.submit();
     
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
-
-            form.appendChild(hiddenField);
-        
-    
-
-    document.body.appendChild(form);
-    form.submit();
 }
 
 $(document).ready(

@@ -59,6 +59,7 @@
 		</select>
 	</div>
 <input type="submit"/>
+<input type="hidden" name="typeAction" value="ajout"/>
 </form>
 
 <!--  Modal (éditer une ligne) -->

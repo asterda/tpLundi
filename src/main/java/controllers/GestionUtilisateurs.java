@@ -1,6 +1,8 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -43,6 +45,15 @@ public class GestionUtilisateurs extends HttpServlet {
 			
 			// Affichage final
 			List<Login> utilisateurs = Application.getInstance().getLoginDao().findAll();
+			
+			// Tri par id
+			Collections.sort(utilisateurs, new Comparator<Login>() {
+				@Override
+				public int compare(Login login1, Login login2) {
+					return login1.getId().compareTo(login2.getId());
+				}
+			});
+			
 			request.setAttribute("utilisateurs", utilisateurs);
 			request.getRequestDispatcher("gestionUtilisateurs.jsp").forward(request, response);
 		}else {
@@ -55,26 +66,57 @@ public class GestionUtilisateurs extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession().getAttribute("isAdmin") != null && (Boolean) request.getSession().getAttribute("isAdmin") == true) {
-			// Variables formulaires
-			String login = request.getParameter("login");
-			String password = request.getParameter("password");
-			String roleStr = request.getParameter("role");
-			Role role = null;
-			if(roleStr.equals("ADMIN")) {
-				role = Role.ADMIN;
+			/*
+			 * typeAction :
+			 * - ajout : ajouter un utilisateur
+			 * - edition : éditer un utilisateur
+			 */
+			String typeAction = request.getParameter("typeAction");
+			
+			if(typeAction != null && typeAction.equals("ajout")) {
+			
+				// Variables formulaires
+				String login = request.getParameter("login");
+				String password = request.getParameter("password");
+				String roleStr = request.getParameter("role");
+				Role role = null;
+				if(roleStr.equals("ADMIN")) {
+					role = Role.ADMIN;
+				}
+				else {
+					role = Role.USER;
+				}
+				// Création Login
+				if(login != null && !login.equals("") && password != null && !password.equals("") && role != null) {
+					Login nouveauLogin = new Login();
+					nouveauLogin.setLogin(login);
+					nouveauLogin.setMotDePasse(password);
+					nouveauLogin.setRole(role);
+					Application.getInstance().getLoginDao().create(nouveauLogin);
+				}
+				doGet(request, response);
+			
+			}else if(typeAction != null && typeAction.equals("edition")) {
+				
+				Long id = Long.parseLong(request.getParameter("id"));
+				String login = request.getParameter("login");
+				String password = request.getParameter("password");
+				String roleStr = request.getParameter("role");
+				Role role = null;
+				if(roleStr.equals("ADMIN")) {
+					role = Role.ADMIN;
+				}
+				else {
+					role = Role.USER;
+				}
+				Login updateLogin = Application.getInstance().getLoginDao().find(id);
+				updateLogin.setLogin(login);
+				updateLogin.setMotDePasse(password);
+				updateLogin.setRole(role);				
+				Application.getInstance().getLoginDao().update(updateLogin);
+				doGet(request, response);				
+				
 			}
-			else if(roleStr.equals("USER")) {
-				role = Role.USER;
-			}
-			// Création Login
-			if(login != null && !login.equals("") && password != null && !password.equals("") && role != null) {
-				Login nouveauLogin = new Login();
-				nouveauLogin.setLogin(login);
-				nouveauLogin.setMotDePasse(password);
-				nouveauLogin.setRole(role);
-				Application.getInstance().getLoginDao().create(nouveauLogin);
-			}
-			doGet(request, response);
 		}else {
 			response.sendRedirect("/tpLundi/Accueil");
 		}		
